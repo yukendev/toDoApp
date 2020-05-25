@@ -17,9 +17,10 @@ export default ToDoList = (props) => {
 const styles = StyleSheet.create({
   listItem: {
     padding: 10,
+    marginBottom: 10,
     flexDirection: "row",
     borderColor: "#ddd",
-    width: "100%",
+    width: "95%",
     height: 70,
     borderWidth: 1,
     alignItems: "center",

@@ -1,7 +1,9 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 
 export default Button = (props) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={styles.button}>
       <Text style={styles.buttonTitle}>{props.buttonTitle}</Text>
