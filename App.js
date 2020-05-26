@@ -3,36 +3,73 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   SafeAreaView,
   Modal,
   TouchableOpacity,
+  TextInput,
+  FlatList,
 } from "react-native";
 import Header from "./component/header";
 import Button from "./component/button";
 import ToDoList from "./component/toDoList";
-import AddModal from "./component/addModal";
 
 export default function App() {
+  const [content, setContent] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [list, setList] = useState([]);
+  const [id, setId] = useState(0);
+
+  AddList = () => {
+    if (content == "") {
+      return false;
+    }
+    setId(id + 1);
+    setList(list.concat({ id: id, content: content }));
+    setContent("");
+  };
+
+  DeleteList = (index) => {
+    const newList = list.filter(function (todo) {
+      return todo.id !== index;
+    });
+    setList(newList);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-
       <View style={styles.toDoListContainer}>
-        <ToDoList text="ゴミ出し" />
-        <ToDoList text="課題" />
+        <FlatList
+          data={list}
+          renderItem={({ item }) => (
+            <ToDoList
+              text={item.content}
+              DeleteList={(index) => {
+                this.DeleteList(index);
+              }}
+              index={item.id}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
       </View>
 
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
-          <Text>Hello World</Text>
+          <TextInput
+            style={styles.modalText}
+            onChangeText={(text) => {
+              setContent(text);
+            }}
+            value={content}
+          />
           <TouchableOpacity
             onPress={() => {
               setModalVisible(!modalVisible);
+              AddList();
             }}
           >
-            <Text>追加する</Text>
+            <Text style={styles.addButton}>追加する</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -60,7 +97,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 70,
     width: "100%",
-    alignItems: "center",
   },
   modalContainer: {
     backgroundColor: "#6495ed",
@@ -72,10 +108,24 @@ const styles = StyleSheet.create({
     marginTop: 300,
     marginRight: "auto",
     marginLeft: "auto",
+    borderRadius: 9,
   },
   buttonWrapper: {
     position: "absolute",
     right: -10,
     bottom: 0,
+  },
+  modalText: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    height: 40,
+    width: "80%",
+    backgroundColor: "#fff",
+  },
+  addButton: {
+    fontSize: 20,
+    marginTop: 40,
+    color: "black",
+    opacity: 1.0,
   },
 });

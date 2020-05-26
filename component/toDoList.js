@@ -1,15 +1,29 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 export default ToDoList = (props) => {
+  const [checkVisible, setCheckVisible] = useState(false);
+
   return (
     <View style={styles.listItem}>
-      <View style={styles.checkBox}></View>
+      <TouchableOpacity
+        style={styles.checkBox}
+        onPress={() => {
+          setCheckVisible(!checkVisible);
+        }}
+      >
+        {checkVisible && <Icon name="check" style={styles.check} />}
+      </TouchableOpacity>
       <Text style={styles.toDoText}>{props.text}</Text>
-      <View style={styles.deleteButton}>
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => {
+          props.DeleteList(props.index);
+        }}
+      >
         <Icon name="trash" style={styles.deleteButtonText} />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -24,6 +38,8 @@ const styles = StyleSheet.create({
     height: 70,
     borderWidth: 1,
     alignItems: "center",
+    marginRight: "auto",
+    marginLeft: "auto",
   },
   checkBox: {
     borderColor: "#6495ed",
@@ -31,6 +47,8 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginRight: 15,
+    justifyContent: "center",
+    alignItems: "center",
   },
   toDoText: {
     fontSize: 20,
@@ -41,6 +59,9 @@ const styles = StyleSheet.create({
     right: 20,
   },
   deleteButtonText: {
+    fontSize: 25,
+  },
+  check: {
     fontSize: 25,
   },
 });
